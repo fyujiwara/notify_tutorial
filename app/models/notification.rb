@@ -22,4 +22,11 @@
 class Notification < ApplicationRecord
   belongs_to :notifiable, polymorphic: true
   belongs_to :recipient, class_name: 'User'
+
+  def self.deliver(notifiable)
+    return nil unless notifiable.notify_condition?
+
+    create!(notifiable: notifiable, recipient: notifiable.notify_recipient)
+  end
+
 end

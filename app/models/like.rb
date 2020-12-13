@@ -19,7 +19,25 @@
 #  user_id  (user_id => users.id)
 #
 class Like < ApplicationRecord
+  include Notifiable
+
   belongs_to :user
   belongs_to :post
   has_one :notification, as: :notifiable
+
+  def notify_recipient
+    post.user
+  end
+
+  def notify_condition?
+    notify_recipient.subscribed?(:like)
+  end
+
+  def notify_title
+    "あなたの記事が「いいね」されました"
+  end
+
+  def notify_body
+    "#{user.name}があなたの記事を「いいね」と言っています"
+  end
 end

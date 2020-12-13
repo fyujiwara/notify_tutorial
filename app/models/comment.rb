@@ -20,7 +20,25 @@
 #  user_id  (user_id => users.id)
 #
 class Comment < ApplicationRecord
+  include Notifiable
+
   belongs_to :user
   belongs_to :post
   has_one :notification, as: :notifiable
+
+  def notify_recipient
+    post.user
+  end
+
+  def notify_condition?
+    notify_recipient.subscribed?(:comment)
+  end
+
+  def notify_title
+    "あなたの記事にコメントがありました"
+  end
+
+  def notify_body
+    "#{user.name}があなたの記事で「#{comment}」と言っています"
+  end
 end
