@@ -18,7 +18,7 @@
 #
 FactoryBot.define do
   factory :subscription do
-    user { nil }
-    type { 1 }
+    user
+    type { Subscription.types.keys.sample }
   end
 end
