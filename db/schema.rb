@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_13_042044) do
+ActiveRecord::Schema.define(version: 2020_12_13_100147) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -34,12 +34,12 @@ ActiveRecord::Schema.define(version: 2020_12_13_042044) do
   create_table "notifications", force: :cascade do |t|
     t.string "notifiable_type", null: false
     t.integer "notifiable_id", null: false
-    t.integer "user_id", null: false
+    t.integer "recipient_id", null: false
     t.datetime "confirmed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
-    t.index ["user_id"], name: "index_notifications_on_user_id"
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2020_12_13_042044) do
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
-  add_foreign_key "notifications", "users"
+  add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "posts", "users"
   add_foreign_key "subscriptions", "users"
 end
