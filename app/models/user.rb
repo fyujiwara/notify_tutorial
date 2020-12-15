@@ -23,4 +23,7 @@ class User < ApplicationRecord
     subscriptions.exists?(type: type)
   end
 
+  def follow(other_user)
+    active_relationships.find_or_create_by(target_user: other_user)
+  end
 end
