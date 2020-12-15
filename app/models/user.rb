@@ -12,6 +12,10 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
+  has_many :active_relationships,  class_name: 'Follow', foreign_key: :user_id, dependent: :destroy
+  has_many :passive_relationships, class_name: 'Follow', foreign_key: :target_user_id, dependent: :destroy
+  has_many :following, through: :active_relationships, source: :target_user
+  has_many :followers, through: :passive_relationships, source: :user
 
   def subscribed?(type)
     raise NotImplementedError unless Subscription.types.include?(type.to_s)
