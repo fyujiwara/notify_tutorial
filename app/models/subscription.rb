@@ -19,6 +19,6 @@
 class Subscription < ApplicationRecord
   belongs_to :user
 
-  enum type: { comment: 0, like: 1 }
+  enum type: { comment: 0, like: 1, follow: 2 }
 
 end

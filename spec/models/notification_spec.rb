@@ -63,5 +63,23 @@ RSpec.describe Notification, type: :model do
         end
       end
     end
+
+    context 'フォローされた場合' do
+      let(:follow){ FactoryBot.create(:follow, target_user: recipient) }
+
+      context 'フォローの通知を許可している場合' do
+        let!(:subscription){ FactoryBot.create(:subscription, user: recipient, type: :follow) }
+
+        it '通知が来ること' do
+          notification = Notification.deliver(follow)
+          expect(recipient.notifications).to be_include notification
+        end
+      end
+      context 'フォローの通知を許可していない場合' do
+        it '通知が来ないこと' do
+          expect(Notification.deliver(follow)).to eq nil
+        end
+      end
+    end
   end
 end

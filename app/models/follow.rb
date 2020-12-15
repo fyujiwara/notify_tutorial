@@ -19,8 +19,28 @@
 #  user_id         (user_id => users.id)
 #
 class Follow < ApplicationRecord
+  include Notifiable
+
   belongs_to :user
   belongs_to :target_user, class_name: 'User'
+  has_one :notification, as: :notifiable
 
   validates :user_id, uniqueness: { scope: :target_user_id }
+
+  def notify_recipient
+    target_user
+  end
+
+  def notify_condition?
+    notify_recipient.subscribed?(:follow)
+  end
+
+  def notify_title
+    "フォローされました"
+  end
+
+  def notify_body
+    "#{user.name}さんからフォローされました"
+  end
+
 end
