@@ -3,10 +3,6 @@ module Notifiable
     raise NotImplementedError
   end
 
-  def notify_condition?
-    true
-  end
-
   def notify_title
     raise NotImplementedError
   end

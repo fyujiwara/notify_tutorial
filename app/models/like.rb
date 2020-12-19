@@ -29,10 +29,6 @@ class Like < ApplicationRecord
     post.user
   end
 
-  def notify_condition?
-    notify_recipient.subscribed?(:like)
-  end
-
   def notify_title
     "あなたの記事が「いいね」されました"
   end

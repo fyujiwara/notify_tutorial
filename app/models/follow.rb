@@ -31,10 +31,6 @@ class Follow < ApplicationRecord
     target_user
   end
 
-  def notify_condition?
-    notify_recipient.subscribed?(:follow)
-  end
-
   def notify_title
     "フォローされました"
   end

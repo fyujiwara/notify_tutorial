@@ -25,41 +25,44 @@ RSpec.describe Notification, type: :model do
 
   describe '##deliver' do
     let!(:recipient) { FactoryBot.create(:user) }
-    let!(:post) { FactoryBot.create(:post, user: recipient) }
 
     context '投稿した記事にいいねされた場合' do
+      let!(:post) { FactoryBot.create(:post, user: recipient) }
       let(:like){ FactoryBot.create(:like, post: post) }
 
       context 'いいねの通知を許可している場合' do
         let!(:subscription){ FactoryBot.create(:subscription, user: recipient, type: :like) }
 
         it '通知が来ること' do
-          notification = Notification.deliver(like)
-          expect(recipient.notifications).to be_include notification
+          expect { Notification.deliver(like, :like) }.to change {
+            recipient.notifications.count
+          }.by(1)
         end
       end
 
       context 'いいねの通知を許可していない場合' do
         it '通知が来ないこと' do
-          expect(Notification.deliver(like)).to eq nil
+          expect(Notification.deliver(like, :like)).to be_falsey
         end
       end
     end
 
     context '投稿した記事にコメントされた場合' do
+      let!(:post) { FactoryBot.create(:post, user: recipient) }
       let(:comment){ FactoryBot.create(:comment, post: post) }
 
       context 'コメントの通知を許可している場合' do
         let!(:subscription){ FactoryBot.create(:subscription, user: recipient, type: :comment) }
 
         it '通知が来ること' do
-          notification = Notification.deliver(comment)
-          expect(recipient.notifications).to be_include notification
+          expect { Notification.deliver(comment, :comment) }.to change {
+            recipient.notifications.count
+          }.by(1)
         end
       end
       context 'コメントの通知を許可していない場合' do
         it '通知が来ないこと' do
-          expect(Notification.deliver(comment)).to eq nil
+          expect(Notification.deliver(comment, :comment)).to be_falsey
         end
       end
     end
@@ -71,13 +74,14 @@ RSpec.describe Notification, type: :model do
         let!(:subscription){ FactoryBot.create(:subscription, user: recipient, type: :follow) }
 
         it '通知が来ること' do
-          notification = Notification.deliver(follow)
-          expect(recipient.notifications).to be_include notification
+          expect { Notification.deliver(follow, :follow) }.to change {
+            recipient.notifications.count
+          }.by(1)
         end
       end
       context 'フォローの通知を許可していない場合' do
         it '通知が来ないこと' do
-          expect(Notification.deliver(follow)).to eq nil
+          expect(Notification.deliver(follow, :follow)).to be_falsey
         end
       end
     end

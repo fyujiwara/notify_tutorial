@@ -30,10 +30,6 @@ class Comment < ApplicationRecord
     post.user
   end
 
-  def notify_condition?
-    notify_recipient.subscribed?(:comment)
-  end
-
   def notify_title
     "あなたの記事にコメントがありました"
   end
