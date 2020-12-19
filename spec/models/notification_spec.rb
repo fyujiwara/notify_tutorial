@@ -31,7 +31,7 @@ RSpec.describe Notification, type: :model do
       let(:like){ FactoryBot.create(:like, post: post) }
 
       context 'いいねの通知を許可している場合' do
-        let!(:subscription){ FactoryBot.create(:subscription, user: recipient, type: :like) }
+        let!(:subscription){ FactoryBot.create(:subscription, user: recipient, subscription_type: :like) }
 
         it '通知が来ること' do
           expect { Notification.deliver(like, :like) }.to change {
@@ -52,7 +52,7 @@ RSpec.describe Notification, type: :model do
       let(:comment){ FactoryBot.create(:comment, post: post) }
 
       context 'コメントの通知を許可している場合' do
-        let!(:subscription){ FactoryBot.create(:subscription, user: recipient, type: :comment) }
+        let!(:subscription){ FactoryBot.create(:subscription, user: recipient, subscription_type: :comment) }
 
         it '通知が来ること' do
           expect { Notification.deliver(comment, :comment) }.to change {
@@ -71,7 +71,7 @@ RSpec.describe Notification, type: :model do
       let(:follow){ FactoryBot.create(:follow, target_user: recipient) }
 
       context 'フォローの通知を許可している場合' do
-        let!(:subscription){ FactoryBot.create(:subscription, user: recipient, type: :follow) }
+        let!(:subscription){ FactoryBot.create(:subscription, user: recipient, subscription_type: :follow) }
 
         it '通知が来ること' do
           expect { Notification.deliver(follow, :follow) }.to change {

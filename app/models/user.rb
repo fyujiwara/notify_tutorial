@@ -18,9 +18,9 @@ class User < ApplicationRecord
   has_many :followers, through: :passive_relationships, source: :user
 
   def subscribed?(type)
-    raise NotImplementedError unless Subscription.types.include?(type.to_s)
+    raise NotImplementedError unless Subscription.subscription_types.include?(type.to_s)
 
-    subscriptions.exists?(type: type)
+    subscriptions.exists?(subscription_type: type)
   end
 
   def follow(other_user)

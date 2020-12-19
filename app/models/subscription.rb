@@ -2,11 +2,11 @@
 #
 # Table name: subscriptions
 #
-#  id         :integer          not null, primary key
-#  type       :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  user_id    :integer          not null
+#  id                :integer          not null, primary key
+#  subscription_type :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  user_id           :integer          not null
 #
 # Indexes
 #
@@ -19,6 +19,6 @@
 class Subscription < ApplicationRecord
   belongs_to :user
 
-  enum type: { comment: 0, like: 1, follow: 2 }
+  enum subscription_type: { comment: 0, like: 1, follow: 2 }
 
 end
