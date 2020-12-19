@@ -86,4 +86,29 @@ RSpec.describe Notification, type: :model do
       end
     end
   end
+
+  describe '##deliver_all' do
+    context 'フォローしているユーザーが記事を投稿した場合' do
+      let(:following_user){ FactoryBot.create(:user) }
+      let(:recipient_01){ FactoryBot.create(:user) }
+      let(:recipient_02){ FactoryBot.create(:user) }
+      let!(:follow_01){ FactoryBot.create(:follow, user: recipient_01, target_user: following_user) }
+      let!(:follow_02){ FactoryBot.create(:follow, user: recipient_02, target_user: following_user) }
+      let(:post){ FactoryBot.create(:post, user: following_user) }
+
+      context '新規投稿の通知を許可している場合' do
+        let!(:subscription_01){ FactoryBot.create(:subscription, user: recipient_01, subscription_type: :post) }
+        let!(:subscription_02){ FactoryBot.create(:subscription, user: recipient_02, subscription_type: :post) }
+
+        it '全てのユーザーに通知が来ること' do
+          expect(Notification.deliver_all(post, :post)).to eq 2
+        end
+      end
+      context '新規投稿の通知を許可していない場合' do
+        it '通知が来ないこと' do
+          expect(Notification.deliver_all(post, :post)).to eq 0
+        end
+      end
+    end
+  end
 end

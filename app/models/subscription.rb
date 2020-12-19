@@ -19,7 +19,7 @@
 class Subscription < ApplicationRecord
   belongs_to :user
 
-  enum subscription_type: { comment: 0, like: 1, follow: 2 }
+  enum subscription_type: { comment: 0, like: 1, follow: 2, post: 3 }
 
   class << self
     def subscribed?(type)

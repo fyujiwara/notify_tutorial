@@ -18,7 +18,23 @@
 #  user_id  (user_id => users.id)
 #
 class Post < ApplicationRecord
+  include Notifiable
+
   belongs_to :user
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :notifications, as: :notifiable
+
+  def notify_recipients
+    user.followers
+  end
+
+  def notify_title
+    "新規記事の投稿がありました"
+  end
+
+  def notify_body
+    "#{user.name}さんの新規記事の投稿がありました"
+  end
+
 end

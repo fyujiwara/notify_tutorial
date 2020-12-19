@@ -29,4 +29,17 @@ class Notification < ApplicationRecord
     !!create!(notifiable: notifiable, recipient: notifiable.notify_recipient)
   end
 
+  def self.deliver_all(notifiable, type)
+    count = 0
+    ActiveRecord::Base.transaction do
+      notifiable.notify_recipients.map do |notify_recipient|
+        next unless notify_recipient.subscribed?(type)
+
+        create!(notifiable: notifiable, recipient: notify_recipient)
+        count += 1
+      end
+    end
+    count
+  end
+
 end

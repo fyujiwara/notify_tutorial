@@ -1,4 +1,8 @@
 module Notifiable
+  def notify_recipients
+    raise NotImplementedError
+  end
+
   def notify_recipient
     raise NotImplementedError
   end
