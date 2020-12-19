@@ -21,4 +21,11 @@ class Subscription < ApplicationRecord
 
   enum subscription_type: { comment: 0, like: 1, follow: 2 }
 
+  class << self
+    def subscribed?(type)
+      raise ArgumentError.new("'#{type}' is not a valid subscription_type") unless subscription_types.include?(type.to_s)
+
+      exists?(subscription_type: type)
+    end
+  end
 end
