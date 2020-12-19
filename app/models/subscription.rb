@@ -23,7 +23,7 @@ class Subscription < ApplicationRecord
 
   class << self
     def subscribed?(type)
-      raise ArgumentError.new("'#{type}' is not a valid subscription_type") unless subscription_types.include?(type.to_s)
+      raise ArgumentError, "'#{type}' is not a valid subscription_type" unless subscription_types.include?(type.to_s)
 
       exists?(subscription_type: type)
     end
