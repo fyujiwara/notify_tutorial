@@ -27,6 +27,10 @@ class Follow < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :target_user_id }
 
+  def self.follow(user:, target_user:)
+    create(user: user, target_user: target_user)
+  end
+
   def notify_recipient
     target_user
   end
