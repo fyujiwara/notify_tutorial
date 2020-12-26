@@ -25,7 +25,9 @@ class Follow < ApplicationRecord
   belongs_to :target_user, class_name: 'User'
   has_one :notification, as: :notifiable
 
-  validates :user_id, uniqueness: { scope: :target_user_id }
+  validates :user_id,
+            uniqueness: { scope: :target_user_id, message: 'has already been followed target user' },
+            exclusion: { in: ->(follow) { [follow.target_user_id] }, message: 'must be different from target user'}
 
   def self.follow(user:, target_user:)
     create(user: user, target_user: target_user)
